@@ -1,6 +1,5 @@
 ---
-- name: jenkins
-  hosts: web
+- hosts: web
   become: true
   roles:
     - jenkins

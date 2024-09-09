@@ -1,34 +1,17 @@
 ---
 - name: Ensure Java is installed
-  package:
-    name: "{{ java_pkg }}"
-    state: present
-  loop:
-    - openjdk-17-jdk
-  when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"
-
-- name: Ensure Java is installed
   apt:
     name: openjdk-17-jdk
     state: present
-  when: ansible_os_family == "Debian"
 
 - name: Add Jenkins repository key
   apt_key:
     url: "{{ jenkins_repo_key_url }}"
     state: present
-  when: ansible_os_family == "Debian"
 
 - name: Add Jenkins repository
   apt_repository:
     repo: "{{ jenkins_repo_url_ubuntu }}"
-  when: ansible_os_family == "Debian"
-
-- name: Add Jenkins repository for CentOS
-  template:
-    src: jenkins.repo.j2
-    dest: /etc/yum.repos.d/jenkins.repo
-  when: ansible_os_family == "RedHat"
 
 - name: Update apt package manager (to include Jenkins repo)
   apt:
@@ -38,7 +21,7 @@
   apt:
     name: jenkins
     state: present
-  notify: restart jenkins
+  notify: restart jenkins  # Notify handler to restart Jenkins
 
 - name: Ensure Jenkins is enabled and started
   service:
