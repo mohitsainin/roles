@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         REMOTE_SSH_KEY_ID = 'ansible.pem'  // Replace with your Jenkins SSH credential ID
-        REMOTE_HOST = '54.237.69.98'  // Replace with your EC2 instance IP
+        REMOTE_HOST = '52.91.151.213'  // Replace with your EC2 instance IP
     }
 
     stages {
