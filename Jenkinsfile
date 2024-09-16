@@ -8,10 +8,8 @@ pipeline {
 
     stages {
         stage('Clone Repository') {
-        stage('Checkout Code') {
             steps {
                 // Clone the GitHub repository
-                git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
                 git url: 'https://github.com/mohitsainin/roles.git', branch: 'main'
             }
         }
@@ -25,9 +23,6 @@ pipeline {
                         ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml
                     '
                     """
-                sshagent(['ansible.pem']) {
-                    // Your SSH command here
-                    sh 'ssh ubuntu@52.91.151.213 "command"'
                 }
             }
         }
@@ -35,7 +30,7 @@ pipeline {
 
     post {
         success {
-            echo 'Hurry !!! Your Jenkins Installation task complete successfully. Now you can use this !!!'
+            echo 'Hurry !!! Your Jenkins Installation task is complete successfully. Now you can use this!!!'
             echo 'Build succeeded!'
         }
         failure {
