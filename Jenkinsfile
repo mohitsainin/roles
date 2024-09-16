@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Clone Repository') {
             steps {
-                git 'https://github.com/mohitsainin/roles.git'
+                git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
             }
         }
         stage('Install Ansible') {
