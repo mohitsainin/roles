@@ -12,7 +12,7 @@ pipeline {
         stage('Playbook Execution') {
             steps {
                 // Set the PATH variable to include the location of ansible-playbook and execute the playbook
-                withEnv(["PATH+AN=/usr/bin/ansible"]) {
+                withEnv(["PATH+ANSIBLE=/usr/bin"]) {
                     sh "ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml"
                 }
             }
