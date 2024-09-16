@@ -15,14 +15,14 @@ pipeline {
         }
         stage('Run Ansible Playbook') {
             steps {
-                sh 'ansible-playbook -i assignmet_0n_tool/tomcat/tests/inventory assignmet_0n_tool/tomcat/tests/test.yml'
+                sh 'ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
             }
         }
     }
 
     post {
         always {
-            echo 'Tomcat installation complete!'
+            echo 'Jenkins installation complete!'
         }
     }
 }
