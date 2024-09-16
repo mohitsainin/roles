@@ -1,26 +1,28 @@
 pipeline {
     agent any
+
     stages {
         stage('Checkout Code') {
             steps {
-                git url: 'https://github.com/mohitsainin/roles.git', branch: 'main'
+                git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
             }
         }
-        stage('Playbook Execution') {
+        stage('Install Ansible') {
             steps {
-                sshagent(['ansible.pem']) {
-                    // Your SSH command here
-                    sh 'ssh ubuntu@52.91.151.213 "command"'
-                }
+                sh 'sudo apt update'
+                sh 'sudo apt install -y ansible'
+            }
+        }
+        stage('Run Ansible Playbook') {
+            steps {
+                sh 'ansible-playbook -i assignmet_0n_tool/tomcat/tests/inventory assignmet_0n_tool/tomcat/tests/test.yml'
             }
         }
     }
+
     post {
-        success {
-            echo 'Build succeeded!'
-        }
-        failure {
-            echo 'Build failed!'
+        always {
+            echo 'Tomcat installation complete!'
         }
     }
 }
