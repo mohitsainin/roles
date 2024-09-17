@@ -1,36 +1,39 @@
 pipeline {
     agent any
+
     stages {
-        stage('Clone Repository') {
+        stage('Clone Repo') {
             steps {
-                git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
+               git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
+               
+                
             }
         }
-        stage('Install Ansible') {
+
+        stage('Dryrun Playbook') {
             steps {
-                sshagent(['ubuntu']) {
+                // Use SSH credentials to run the dry run of the Ansible playbook
+                withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@52.91.151.213 '
-                    sudo apt update &&
-                    sudo apt install -y ansible'
+                    ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml --check
                     '''
                 }
             }
         }
-        stage('Playbook Execution') {
+
+        stage('Execute Playbook') {
+            input {
+                message "Do you want to perform apply?"
+                ok "Yes"
+            }
             steps {
-                sshagent(['ubuntu']) {
+                // Use SSH credentials to run the Ansible playbook
+                withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
                     sh '''
-                    ssh -o StrictHostKeyChecking=no ubuntu@52.91.151.213 '
-                    ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
+                    ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.ym
                     '''
                 }
             }
-        }
-    }
-    post {
-        failure {
-            echo 'Build failed!'
         }
     }
 }
