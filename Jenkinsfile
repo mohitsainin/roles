@@ -1,39 +1,36 @@
 pipeline {
     agent any
 
+        environment {
+        AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
+        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
+        AWS_DEFAULT_REGION    = 'ap-south-1'
+    }
+
     stages {
-        stage('Clone Repo') {
+        stage('Checkout') {
             steps {
-               git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
-               
-                
+                git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
             }
         }
-
-        stage('Dryrun Playbook') {
+        
+        stage('Run Ansible Playbook') {
             steps {
-                // Use SSH credentials to run the dry run of the Ansible playbook
-                withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
-                    sh '''
-                    ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml --check
-                    '''
+                dir('/var/lib/jenkins/workspace/jenkins_Automation') {
+                    sh 'pwd'
+                sh 'ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
+                    
                 }
             }
         }
-
-        stage('Execute Playbook') {
-            input {
-                message "Do you want to perform apply?"
-                ok "Yes"
-            }
-            steps {
-                // Use SSH credentials to run the Ansible playbook
-                withCredentials([sshUserPrivateKey(credentialsId: 'ubuntu', keyFileVariable: 'SSH_PRIVATE_KEY')]) {
-                    sh '''
-                    ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.ym
-                    '''
-                }
-            }
+    }
+}
+    post {
+        success {
+            echo 'Ansible playbook executed successfully.'
+        }
+        failure {
+            echo 'Ansible playbook execution failed.'
         }
     }
 }
