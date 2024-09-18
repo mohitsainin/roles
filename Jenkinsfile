@@ -1,10 +1,10 @@
 pipeline {
     agent any
 
-        environment {
+    environment {
         AWS_ACCESS_KEY_ID     = credentials('aws-access-key-id')
         AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')
-        AWS_DEFAULT_REGION    = 'us-east-1'
+        AWS_DEFAULT_REGION   = 'us-east-1'
     }
 
     stages {
@@ -13,17 +13,14 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/mohitsainin/roles.git'
             }
         }
-        
+
         stage('Run Ansible Playbook') {
             steps {
-                {
-                     sh 'ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
-                    
-                }
+                sh 'ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
             }
         }
     }
-}
+
     post {
         success {
             echo 'Ansible playbook executed successfully.'
