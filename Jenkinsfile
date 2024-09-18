@@ -16,7 +16,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh '/usr/bin/ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
+                sh 'ansible-playbook -i /home/ubuntu/roles/jenkins/tests/inventory /home/ubuntu/roles/jenkins/tests/test.yml'
             }
         }
     }
