@@ -1,39 +1,5 @@
 ---
-- name: Ensure Java is installed
-  apt:
-    name: openjdk-17-jdk
-    state: present
-
-- name: Add Jenkins repository key
-  apt_key:
-    url: "{{ jenkins_repo_key_url }}"
-    state: present
-
-- name: Add Jenkins repository
-  apt_repository:
-    repo: "{{ jenkins_repo_url_ubuntu }}"
-
-- name: Update apt package manager (to include Jenkins repo)
-  apt:
-    update_cache: yes
-
-- name: Install Jenkins
-  apt:
-    name: jenkins
-    state: present
-  notify: restart jenkins  # Notify handler to restart Jenkins
-
-- name: Ensure Jenkins is enabled and started
-  service:
-    name: jenkins
-    state: started
-    enabled: yes
-
-- name: Display initial Jenkins admin password
-  command: cat /var/lib/jenkins/secrets/initialAdminPassword
-  register: jenkins_admin_password
-
-- name: Print Jenkins initial admin password
-  debug:
-    msg: "Jenkins initial admin password: {{ jenkins_admin_password.stdout }}"
+- name: Install Jenkins on Linux
+  include_tasks: install_linux.yml
+  when: ansible_os_family == 'Debian'
 

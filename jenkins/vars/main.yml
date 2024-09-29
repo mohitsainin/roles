@@ -1,4 +1,4 @@
 ---
-jenkins_repo_key_url: "https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key"
-jenkins_repo_url_ubuntu: "deb https://pkg.jenkins.io/debian-stable binary/"
-
+jenkins_gpg_key: "https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key"
+jenkins_gpg_dest: "/usr/share/keyrings/jenkins-keyring.asc"
+jenkins_repo_url: "https://pkg.jenkins.io/debian-stable"
