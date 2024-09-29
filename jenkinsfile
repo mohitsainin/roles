@@ -10,7 +10,7 @@ pipeline {
 
         stage('Run Ansible Playbook') {
             steps {
-                sh 'ansible-playbook -i ./roles/jenkins/aws_ec2.yml ./roles/jenkins/playbook.yml'
+                sh 'ansible-playbook -i ./roles/jk-tool/aws_ec2.yml ./roles/jk-tool/jenkins/playbook.yml'
             }
         }
     }
