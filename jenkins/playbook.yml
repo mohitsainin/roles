@@ -1,1 +1,9 @@
+---
+- name: Deploy Jenkins
+  hosts: aws_ec2
+  become: yes
+  roles:
+    - role: roles/jenkins
+      tomcat_group: "jenkins"
+      tomcat_user: "jenkins"
 
